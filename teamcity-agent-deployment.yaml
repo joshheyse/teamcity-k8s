@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teamcity-agent
+  namespace: teamcity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: teamcity-agent
+  template:
+    metadata:
+      labels:
+        app: teamcity-agent
+    spec:
+      containers:
+        - name: teamcity-agent
+          image: teamcity-agent:EAP-linux-arm64
+          env:
+            - name: SERVER_URL
+              value: teamcity-server-service:8111
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "200m"
+          ports:
+            - containerPort: 9090
